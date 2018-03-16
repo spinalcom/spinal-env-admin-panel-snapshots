@@ -1,0 +1,38 @@
+<md-dialog aria-label="Add Spinal System" style="width: 65%;max-width: 800px;">
+  <form name="newsystem" ng-submit="newSystemOK(newsystem, system)" ng-cloak>
+    <md-toolbar style="background-color:black;">
+      <div class="md-toolbar-tools">
+        <h2 style="color: white;">Add Spinal System</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="newSystemCancel()">
+          <ng-md-icon icon="close" style="fill:white;" aria-label="Close dialog" class=""></ng-md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <md-card>
+          <md-card-content>
+            <md-input-container class="md-block">
+              <label>Spinal System name (Docker image)</label>
+              <input type="text" ng-model="system.name" name="name" required/>
+              <div ng-messages="newsystem.name.$error">
+                <div ng-message-exp="['required']">
+                  Docker Image cannot be found.
+                </div>
+              </div>
+            </md-input-container>
+          </md-card-content>
+        </md-card>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row" style="padding-right: 26px;">
+      <md-button class="md-fab" aria-label="Confirm" style="height: 40px; width: 40px;" ng-disabled="newsystem.$invalid" ng-click="newSystemOK(newsystem, system)">
+        <md-tooltip>Confirm</md-tooltip>
+        <ng-md-icon icon="done" style="fill:white;" aria-label="Confirm" class=""></ng-md-icon>
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -1,0 +1,73 @@
+<md-dialog aria-label="Edit User" style="width: 65%;max-width: 800px;">
+  <md-toolbar style="background-color:black;">
+    <div class="md-toolbar-tools">
+      <h2 style="color: white;">Spinal System (Docker image) : {{system.name}}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <ng-md-icon icon="close" style="fill:white;" aria-label="Close dialog" class=""></ng-md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">List of Spinal System instances (Docker containers)</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content layout="row" layout-align="left">
+          <md-list class="">
+            <md-list-item ng-repeat="c in containers" class="md-2-line">
+              <ng-md-icon icon="{{getConainerIcon()}}" style="fill:white; margin: auto 10px auto 0px; height: 24px; width: 24px;"
+                options='{"duration": 375, "rotation": "none"}' class="md-avatar-icon"></ng-md-icon>
+              <div class="md-list-item-text">
+                <h3>{{ c.name }} <a class="md-icon-button" target="_blank" ng-href="{{getContainerUrl($index)}}">Open</a></h3>
+              </div>
+              <ng-md-icon icon="play_arrow" style="fill:white; height: 24px;" ng-click="start($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+              <ng-md-icon icon="pause_circle_filled" style="fill:white; height: 24px;" ng-click="stop($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+              <ng-md-icon icon="content_copy" style="fill:white; height: 24px;" ng-click="createSnapshot($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+              <ng-md-icon icon="delete" style="fill:white; height: 24px;" ng-click="deleteContainer($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+              <ng-md-icon icon="restore" style="fill:white; height: 24px;" ng-click="restore($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+            </md-list-item>
+          </md-list>
+        </md-card-content>
+      </md-card>
+      <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">List of Spinal System data snapshots (Volume backups)</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content layout="row" layout-align="left">
+          <md-list class="">
+            <md-list-item ng-repeat="v in volumes" class="md-2-line">
+              <ng-md-icon icon="storage" style="fill:white; margin: auto 10px auto 0px; height: 24px; width: 24px;"
+                options='{"duration": 375, "rotation": "none"}' class="md-avatar-icon"></ng-md-icon>
+              <div class="md-list-item-text">
+                <h3>{{ v.name }}</h3>
+              </div>
+              <ng-md-icon icon="delete" style="fill:white; height: 24px;" ng-click="deleteVolume($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+              <ng-md-icon ng-if="needsRestore > -1" icon="check-circle" style="fill:white; height: 24px;" ng-click="restore($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+            </md-list-item>
+          </md-list>
+        </md-card-content>
+      </md-card>
+
+      <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Delete System</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content layout="row" layout-align="center">
+          <md-button class="md-raised md-warn" style="width: 100%;" ng-click="delete_system(system)">Delete System</md-button>
+        </md-card-content>
+      </md-card>
+
+    </div>
+  </md-dialog-content>
+
+
+</md-dialog>

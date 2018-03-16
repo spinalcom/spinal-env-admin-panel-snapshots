@@ -1,0 +1,51 @@
+<md-dialog aria-label="Edit User" style="width: 65%;max-width: 800px;">
+  <md-toolbar style="background-color:black;">
+    <div class="md-toolbar-tools">
+      <h2 style="color: white;">Spinal System (Docker image) : {{system.name}}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <ng-md-icon icon="close" style="fill:white;" aria-label="Close dialog" class=""></ng-md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">New container</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content layout="row" layout-align="center">
+          <form name="newContainer" ng-submit="deploy(container.port, container.name)" style="width: 100%;" ng-cloak>
+            <md-input-container class="md-block">
+              <label>Port</label>
+              <input type="number" ng-model="container.port" name="port" required>
+              <div ng-messages="newContainer.port.$error">
+                <div ng-message="required">This is required.</div>
+              </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Name</label>
+              <input type="text" ng-model="container.name" name="name" required>
+              <div ng-messages="newContainer.name.$error">
+                <div ng-message="required">This is required.</div>
+              </div>
+            </md-input-container>
+            <md-dialog-actions layout="row">
+              <span flex></span>
+              <md-button class="md-fab" aria-label="Confirm" style="height: 40px; width: 40px;" ng-disabled="newContainer.$invalid" ng-click="deploy(container.port, container.name)">
+                <md-tooltip>Confirm</md-tooltip>
+                <ng-md-icon icon="done" style="fill:white;" aria-label="Confirm" class=""></ng-md-icon>
+              </md-button>
+            </md-dialog-actions>
+          </form>
+        </md-card-content>
+      </md-card>
+
+    </div>
+  </md-dialog-content>
+
+
+</md-dialog>

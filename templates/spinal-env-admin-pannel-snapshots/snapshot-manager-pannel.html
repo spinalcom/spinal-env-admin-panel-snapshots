@@ -1,0 +1,31 @@
+<style>
+  .md-button.md-altTheme-theme.md-fab[disabled]>ng-md-icon {
+    fill: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  .md-dialog-content {
+    background-color: #212121;
+  }
+</style>
+<md-list class="">
+  <md-list-item class="md-1-line" style="padding: 0 8px;">
+    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+      <md-button ng-repeat="btn in mainMenuBtn" ng-if="showMainBtn(btn)" class="md-fab" aria-label="btn.label" style="height: 40px; width: 40px;"
+        ng-click="mainMenuClick(btn)">
+        <ng-md-icon icon="{{btn.icon}}" style="fill:white; height: 24px;" class=""></ng-md-icon>
+      </md-button>
+    </section>
+  </md-list-item>
+  <md-subheader class="md-no-sticky">Spinal System List</md-subheader>
+  <md-list-item ng-repeat="snap in snapshots" class="md-2-line" ng-attr-style="{{selectedStyle(snap)}}">
+    <ng-md-icon icon="{{getUserIcon(snap)}}" ng-click="clickUserIcon(snap)" style="fill:white; margin: auto 10px auto 0px; height: 24px; width: 24px;"
+      options='{"duration": 375, "rotation": "none"}' class="md-avatar-icon"></ng-md-icon>
+    <div class="md-list-item-text">
+      <h3>{{ snap.name }}</h3>
+      <h4>{{ getUserTypeString(snap) }}</h4>
+      <p>Total instances: 0 / Last backup: (date)</p>
+    </div>
+    <ng-md-icon icon="cloud_upload" style="fill:white; height: 24px;" ng-click="deploySystem($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+    <ng-md-icon icon="list" style="fill:white; height: 24px;" ng-click="viewList($index)" aria-label="viewList" class="md-secondary"></ng-md-icon>
+  </md-list-item>
+</md-list>
