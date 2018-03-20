@@ -146,7 +146,7 @@ function DockerImageModel(name) {
         volumes: []
     });
 
-    this.newContainer = function (port, restoreVolume = false) {
+    this.newContainer = function (port, containerName = null, restoreVolume = false) {
       /*
         containers' status:
         0: new (starting)
@@ -158,7 +158,8 @@ function DockerImageModel(name) {
         6: to stop
       */
 
-      let containerName = this.name.get().replace(/[^a-zA-Z0-9_.-]/g, "_") + '-' + port;
+      if (containerName == null)
+        containerName = this.name.get().replace(/[^a-zA-Z0-9_.-]/g, "_") + '-' + port;
 
       let volume = containerName + '_volume';
 
