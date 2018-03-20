@@ -13,16 +13,16 @@ require("./SnapshotsCtrl");
         };
 
         let toload = [{
-          uri: '../templates/spinal-env-admin-pannel-snapshots/snapshot-manager-pannel.html',
-          name: 'snapshot-manager-pannel.html'
+          uri: '../templates/spinal-env-admin-panel-snapshots/snapshot-manager-panel.html',
+          name: 'snapshot-manager-panel.html'
         }, {
-          uri: '../templates/spinal-env-admin-pannel-snapshots/snapshot-manager-create-system.html',
+          uri: '../templates/spinal-env-admin-panel-snapshots/snapshot-manager-create-system.html',
           name: 'snapshot-manager-create-system.html'
         }, {
-          uri: '../templates/spinal-env-admin-pannel-snapshots/snapshot-manager-deploy.html',
+          uri: '../templates/spinal-env-admin-panel-snapshots/snapshot-manager-deploy.html',
           name: 'snapshot-manager-deploy.html'
         }, {
-          uri: '../templates/spinal-env-admin-pannel-snapshots/snapshot-manager-list.html',
+          uri: '../templates/spinal-env-admin-panel-snapshots/snapshot-manager-list.html',
           name: 'snapshot-manager-list.html'
         }];
 
@@ -31,7 +31,7 @@ require("./SnapshotsCtrl");
         }
 
         goldenLayoutService.registerPanel({
-          id: "drag-snapshots-pannel",
+          id: "drag-snapshots-panel",
           name: "Snapshots Management",
           cfg: {
             isClosable: true,
@@ -40,7 +40,7 @@ require("./SnapshotsCtrl");
             width: 20,
             componentName: 'SpinalHome',
             componentState: {
-              template: 'snapshot-manager-pannel.html',
+              template: 'snapshot-manager-panel.html',
               module: 'app.spinal-panel',
               controller: 'SnapshotsCtrl'
             }
