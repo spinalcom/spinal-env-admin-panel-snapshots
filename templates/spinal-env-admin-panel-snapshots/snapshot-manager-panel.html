@@ -23,7 +23,6 @@
     <div class="md-list-item-text">
       <h3>{{ snap.name }}</h3>
       <h4>{{ getUserTypeString(snap) }}</h4>
-      <p>Total instances: {{ snap.containers.length }}</p>
     </div>
     <ng-md-icon icon="cloud_upload" style="fill:white; height: 24px;" ng-click="deploySystem($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
     <ng-md-icon icon="list" style="fill:white; height: 24px;" ng-click="viewList($index)" aria-label="viewList" class="md-secondary"></ng-md-icon>
