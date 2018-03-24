@@ -23,13 +23,24 @@
               <ng-md-icon icon="{{getConainerIcon()}}" style="fill:white; margin: auto 10px auto 0px; height: 24px; width: 24px;"
                 options='{"duration": 375, "rotation": "none"}' class="md-avatar-icon"></ng-md-icon>
               <div class="md-list-item-text">
-                <h3>{{ c.name }} <a class="md-icon-button" target="_blank" ng-href="{{getContainerUrl($index)}}">Open</a></h3>
+                <h3>{{ c.name }} <span style="font-size: 11px; color: #fff">[ <a class="md-icon-button" target="_blank" ng-href="{{getContainerUrl($index)}}">OPEN</a> ]</span></h3>
+                <p>Using data backup: {{ c.lastVolume == '' ? 'Original' : c.lastVolume }}</p>
               </div>
-              <ng-md-icon icon="play_arrow" style="fill:white; height: 24px;" ng-click="start($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
-              <ng-md-icon icon="pause_circle_filled" style="fill:white; height: 24px;" ng-click="stop($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+              <!-- placeholder when container is in transition -->
+              <ng-md-icon ng-if="c.status != 1 && c.status != 2" icon="watch_later" ng-click="alert('waiting...')" style="fill:grey; height: 24px;" aria-label="systemUnkown1" class="md-secondary"></ng-md-icon>
+              <ng-md-icon ng-if="c.status != 1 && c.status != 2" icon="watch_later" ng-click="alert('waiting...')" style="fill:grey; height: 24px;" aria-label="systemUnkown2" class="md-secondary"></ng-md-icon>
+              <!-- end of placeholder -->
+              <!-- status and action buttons when container is on -->
+              <ng-md-icon ng-if="c.status == 1" ng-click="checkContainer($index)" icon="fiber_manual_record" style="fill:green; height: 24px;" aria-label="systemOn" class="md-secondary"></ng-md-icon>
+              <ng-md-icon ng-if="c.status == 1" icon="pause_circle_filled" style="fill:white; height: 24px;" ng-click="stop($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+              <!-- end of status and action -->
+              <!-- status and action buttons when container is off -->
+              <ng-md-icon ng-if="c.status == 2" ng-click="checkContainer($index)" icon="fiber_manual_record" style="fill:red; height: 24px;" aria-label="systemOff" class="md-secondary"></ng-md-icon>
+              <ng-md-icon ng-if="c.status == 2" icon="play_arrow" style="fill:white; height: 24px;" ng-click="start($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+              <!-- end of status and action -->
               <ng-md-icon icon="content_copy" style="fill:white; height: 24px;" ng-click="createSnapshot($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
-              <ng-md-icon icon="delete" style="fill:white; height: 24px;" ng-click="deleteContainer($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
               <ng-md-icon icon="restore" style="fill:white; height: 24px;" ng-click="restore($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+              <ng-md-icon icon="delete" style="fill:white; height: 24px;" ng-click="deleteContainer($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
             </md-list-item>
           </md-list>
         </md-card-content>
@@ -49,7 +60,7 @@
                 <h3>{{ v.name }}</h3>
               </div>
               <ng-md-icon icon="delete" style="fill:white; height: 24px;" ng-click="deleteVolume($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
-              <ng-md-icon ng-if="needsRestore > -1" icon="check-circle" style="fill:white; height: 24px;" ng-click="restore($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
+              <ng-md-icon ng-if="needsRestore > -1" icon="done" style="fill:white; height: 24px;" ng-click="confirmRestore($index)" aria-label="deploySystem" class="md-secondary"></ng-md-icon>
             </md-list-item>
           </md-list>
         </md-card-content>

@@ -98,9 +98,9 @@
               ariaLabel: 'ContainerList',
               template: $templateCache.get("snapshot-manager-list.html"),
               parent: angular.element(document.body),
-              clickOutsideToClose: true,
+              clickOutsideToClose: false,
               fullscreen: true,
-              controller: ["$scope", "$mdDialog", "$copyToClipboard", "$mdToast", "$window", "system", ContainerListCtrl],
+              controller: ["$scope", "$mdDialog", "$copyToClipboard", "$mdToast", "$window", "$http", "SpinalSnapshotsService", "system", ContainerListCtrl],
               locals: {
                 system: system,
                 spinalModelDictionary: spinalModelDictionary,
@@ -175,22 +175,35 @@
       }
     ]);
 
-  var ContainerListCtrl = function ($scope, $mdDialog, $copyToClipboard, $mdToast, $window, system) {
+  var ContainerListCtrl = function ($scope, $mdDialog, $copyToClipboard, $mdToast, $window, $http, SpinalSnapshotsService, system) {
 
-    $scope.containers = system.containers.get();
+    $scope.containers = [];
+
+    system.containers.bind(function () {
+      $scope.$apply($scope.containers = system.containers.get());
+    });
+
+    let checkInterval = setInterval(function () {
+
+      let t = $scope.containers.length;
+
+      for (let i=0; i < t; i++)
+        system.checkContainer(i);
+
+    }, 2000);
+
     $scope.needsRestore = -1;
     system.volumes.bind(function () {
       if (system.volumes.has_been_modified()) {
         $scope.$apply($scope.volumes = system.volumes.get());
-        
       }
     });
 
-    $scope.cancel = function () {
-      $mdDialog.cancel();
-    }
-
     $scope.system = system.get();
+
+    $scope.checkContainer = function (i) {
+      system.checkContainer(i);
+    }
 
     $scope.deleteVolume = function (i) {
       system.removeVolume(i);
@@ -209,11 +222,19 @@
     }
 
     $scope.confirmRestore = function (i) {
-      system.stopContainer(i);
+      let container = $scope.needsRestore;
+      let volume = i;
+      system.containers[container].restoreVolume.set($scope.volumes[volume].name);
+      $scope.needsRestore = -1;
+      
     }
 
     $scope.createSnapshot = function (i) {
       system.addVolume(i);
+    }
+
+    $scope.deleteContainer = function (i) {
+      system.removeContainer(i);
     }
 
     $scope.getContainerUrl = function (i) {
@@ -224,8 +245,25 @@
       return "settings";
     }
 
-    $scope.delete_system = function(system) {
-      console.log('delete system');
+    $scope.delete_system = function() {
+      // remove containers
+      for (let i = 0; i < system.containers.length; i++) {
+        system.removeContainer(i);
+      }
+
+      // remove volumes
+      for (let i = 0; i < system.volumes.length; i++) {
+        system.removeVolume(i);
+      }
+
+      SpinalSnapshotsService.removeSystem(system.name.get());
+
+      $scope.cancel();
+    }
+
+    $scope.cancel = function () {
+      clearInterval(checkInterval);
+      $mdDialog.cancel();
     }
 
   };
@@ -243,10 +281,6 @@
     $scope.deploy = function(port, name) {
       system.newContainer(port, name);
       $mdDialog.hide();
-    }
-
-    $scope.delete_system = function(system) {
-      console.log('delete system');
     }
 
   };

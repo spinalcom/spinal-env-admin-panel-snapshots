@@ -15,6 +15,25 @@ angular.module('app.spinal-panel')
       ngSpinalCore.store(systemModel, 'SpinalSystems/' + systemName.replace("/","_"));
     }
 
+    factory.removeSystem = function (systemName) {
+      console.log('sys has been added');
+
+      ngSpinalCore.load('SpinalSystems').then(function (systemList) {
+        let t = systemList.length;
+        let i = -1;
+
+        while (t-- && i < 0) {
+          let s = systemList[t];
+
+          if (s.name.get() == systemName.replace("/","_"))
+            i = t;
+        }
+
+        if (i > -1)
+          systemList.splice(i, 1);
+      });
+    }
+
     factory.getList = function (callback) {
       ngSpinalCore.load('SpinalSystems').then(function(systemList) {
 
@@ -143,10 +162,22 @@ function DockerImageModel(name) {
     this.add_attr({
         name: name,
         containers: [],
-        volumes: []
+        volumes: [],
+        toCheck: [],
+        processed: false
     });
 
-    this.newContainer = function (port, containerName = null, restoreVolume = false) {
+    this.checkContainer = function (id) {
+      this.toCheck.push(id);
+    }
+
+    this.checkedContainer = function (id) {
+      let i = this.toCheck.indexOf(id);
+      if (i > -1)
+        this.toCheck.splice(i, 1);
+    }
+
+    this.newContainer = function (port, containerName = null, restoreVolume = '') {
       /*
         containers' status:
         0: new (starting)
@@ -163,7 +194,7 @@ function DockerImageModel(name) {
 
       let volume = containerName + '_volume';
 
-      this.containers.push({ name: containerName, port: port, volume: volume, status: 0, restoreVolume: restoreVolume });
+      this.containers.push({ name: containerName, port: port, volume: volume, status: 0, restoreVolume: restoreVolume, lastVolume: '' });
     }
 
     this.removeContainer = function (i) {
